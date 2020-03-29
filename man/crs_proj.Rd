@@ -22,10 +22,12 @@ include raster, sf, sp, and silicate.
 crs_proj(sfx)
 
 crs_proj(sfx$geom)
+
+crs_proj(sfx_new) ## NA
 }
 \references{
 \href{https://proj.org/}{PROJ system website}
 }
 \seealso{
-\code{\link[=crs_epsg]{crs_epsg()}} \code{\link[=crs_wkt2]{crs_wkt2()}}
+\code{\link[=crs_epsg]{crs_epsg()}} \code{\link[=crs_wkt2]{crs_wkt2()}} \code{\link[=crs_input]{crs_input()}}
 }

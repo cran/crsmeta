@@ -23,10 +23,12 @@ crs_epsg(sfx)
 x <- sfx
 attr(x$geom, "crs")$epsg <- NA ## oh no we lost it
 crs_epsg(x)
+
+crs_epsg(sfx_new) ## NA, doesn't exist now
 }
 \references{
 \href{http://www.epsg.org/}{EPSG website}
 }
 \seealso{
-\code{\link[=crs_wkt2]{crs_wkt2()}} \code{\link[=crs_proj]{crs_proj()}}
+\code{\link[=crs_wkt2]{crs_wkt2()}} \code{\link[=crs_proj]{crs_proj()}} \code{\link[=crs_input]{crs_input()}}
 }

@@ -26,11 +26,13 @@ sf_core <- function(x, ...) {
 #' @return character string (or `NA`)
 #' @references [PROJ system website](https://proj.org/)
 #' @export
-#' @seealso [crs_epsg()] [crs_wkt2()]
+#' @seealso [crs_epsg()] [crs_wkt2()] [crs_input()]
 #' @examples
 #' crs_proj(sfx)
 #'
 #' crs_proj(sfx$geom)
+#'
+#' crs_proj(sfx_new) ## NA
 crs_proj <- function(x, ...) {
   x_na <- NA_character_
   ## start with raster, then sp, then sf, then sc, then character, finally return NA
@@ -80,11 +82,13 @@ crs_proj <- function(x, ...) {
 #' @references [WKT2 specification](http://docs.opengeospatial.org/is/12-063r5/12-063r5.html)
 #' @export
 #' @aliases crs_wkt
-#' @seealso [crs_epsg()] [crs_proj()] [crs_wkt()]
+#' @seealso [crs_epsg()] [crs_proj()] [crs_wkt()] [crs_input()]
 #' @examples
-#' crs_wkt2(sfx)
+#' crs_wkt2(sfx) # NA
+#' crs_wkt2(sfx$geom) # NA
 #'
-#' crs_wkt2(sfx$geom)
+#' crs_wkt2(sfx_new)
+#' crs_wkt2(sfx_new$geom)
 crs_wkt2 <- function(x, ...) {
   x_na <- NA_character_
   ## look for a wkt2 equivalent from sf or sp
@@ -121,17 +125,54 @@ crs_wkt <- function(x, ...) {
 #' @return integer (or NA)
 #' @export
 #' @references [EPSG website](http://www.epsg.org/)
-#' @seealso [crs_wkt2()] [crs_proj()]
+#' @seealso [crs_wkt2()] [crs_proj()] [crs_input()]
 #' @examples
 #' crs_epsg(sfx)
 #' x <- sfx
 #' attr(x$geom, "crs")$epsg <- NA ## oh no we lost it
 #' crs_epsg(x)
+#'
+#' crs_epsg(sfx_new) ## NA, doesn't exist now
 crs_epsg <- function(x, ...) {
   x_na <- NA_integer_
   x <- sf_core(x)
   if (!is.null(x) && !all(is.na(unlist(x)))) {
     out <- x[["epsg"]]
+    if (is.null(out)) out <- x_na
+    return(out)
+  }
+  x_na
+}
+
+#' Extract 'input' value
+#'
+#' Obtain the 'input' string from an object, if it has one. Supported inputs
+#' include sf (>= 0.8-1 - probably).
+#'
+#' @section Warning:
+#'
+#' Note that the 'input' value could be almost anything, there is a
+#' huge variety of inputs that can work such as `4326`, projstrings,
+#' WKT2 strings, EPSG declarations `'EPSG:4326'`, or common strings like
+#' `'WGS84'` or `'NAD27'`.
+#'
+#' Strings like `'+init=epsg:4326'` have been deprecated but still
+#' can work, so beware.
+#' @param x object with 'input' value
+#' @param ... ignored
+#' @return character (or NA)
+#' @export
+#' @references [sf](http://r-spatial.github.io/sf/)
+#' @seealso [crs_wkt2()] [crs_proj()] [crs_epsg()]
+#' @examples
+#' crs_input(sfx) ## doesn't have one
+#'
+#' crs_input(sfx_new)  ## a proj4string
+crs_input <- function(x, ...) {
+  x_na <- NA_character_
+  x <- sf_core(x)
+  if (!is.null(x) && !all(is.na(unlist(x)))) {
+    out <- x[["input"]]
     if (is.null(out)) out <- x_na
     return(out)
   }

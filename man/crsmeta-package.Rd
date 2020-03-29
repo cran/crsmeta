@@ -33,6 +33,9 @@ main kind of projection string.
 \code{\link{crs_proj}}        \tab short PROJ4 style string  \cr
 \code{\link{crs_wkt2}}        \tab the full parameter set as WKT2 string \cr
 }
+
+Note, this help page has a weird name because for some reason
+'crsmeta-package' prevents the page showing up in pkgdown docs.
 }
 \seealso{
 Useful links:
